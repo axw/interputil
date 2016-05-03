@@ -2,6 +2,7 @@ package interputil_test
 
 import (
 	"go/ast"
+	"go/token"
 	"testing"
 
 	"github.com/axw/interputil"
@@ -22,7 +23,8 @@ func TestParseImports(t *testing.T) {
 func testParseImports(t *testing.T, src string, expect ...importSpec) {
 	t.Logf("testing ParseImports with %q", src)
 	b := newBuffer(src)
-	imports, err := interputil.ParseImports(b)
+	fset := token.NewFileSet()
+	imports, err := interputil.ParseImports(fset, b)
 	if err != nil {
 		t.Errorf("failed to parse %q: %v", src, err)
 		return
@@ -67,7 +69,8 @@ func TestParseFuncDeclRecv(t *testing.T) {
 func testParseFuncDecl(t *testing.T, src, name string) *ast.FuncDecl {
 	t.Logf("testing ParseFuncDecl with %q", src)
 	b := newBuffer(src)
-	funcDecl, err := interputil.ParseFuncDecl(b)
+	fset := token.NewFileSet()
+	funcDecl, err := interputil.ParseFuncDecl(fset, b)
 	if err != nil {
 		t.Errorf("failed to parse %q: %v", src, err)
 		return nil
@@ -87,7 +90,8 @@ func TestParseTypeSpec(t *testing.T) {
 func testParseTypeSpec(t *testing.T, src string) *ast.TypeSpec {
 	t.Logf("testing ParseTypeSpec with %q", src)
 	b := newBuffer(src)
-	spec, err := interputil.ParseTypeSpec(b)
+	fset := token.NewFileSet()
+	spec, err := interputil.ParseTypeSpec(fset, b)
 	if err != nil {
 		t.Errorf("failed to parse %q: %v", src, err)
 		return nil
@@ -109,7 +113,8 @@ func TestParseValueSpec(t *testing.T) {
 func testParseValueSpec(t *testing.T, src string) *ast.ValueSpec {
 	t.Logf("testing ParseValueSpec with %q", src)
 	b := newBuffer(src)
-	spec, err := interputil.ParseValueSpec(b)
+	fset := token.NewFileSet()
+	spec, err := interputil.ParseValueSpec(fset, b)
 	if err != nil {
 		t.Errorf("failed to parse %q: %v", src, err)
 		return nil
@@ -127,7 +132,8 @@ func TestParseStmt(t *testing.T) {
 func testParseStmt(t *testing.T, src string) ast.Stmt {
 	t.Logf("testing ParseStmt with %q", src)
 	b := newBuffer(src)
-	stmt, err := interputil.ParseStmt(b)
+	fset := token.NewFileSet()
+	stmt, err := interputil.ParseStmt(fset, b)
 	if err != nil {
 		t.Errorf("failed to parse %q: %v", src, err)
 		return nil

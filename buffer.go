@@ -69,6 +69,18 @@ func (b *Buffer) WriteString(s string) (int, error) {
 	return b.buf.WriteString(s)
 }
 
+// Len returns the number of bytes in the buffer; b.Len() == len(b.String()).
+func (b *Buffer) Len() int {
+	return b.buf.Len()
+}
+
+// Reset resets the buffer to be empty, but it retains the underlying storage
+// for use by future writes.
+func (b *Buffer) Reset() {
+	b.buf.Reset()
+	*b = Buffer{buf: b.buf}
+}
+
 // Ready returns true iff the buffer contains a balanced set of parentheses,
 // brackets, braces, and back quotes.
 func (b *Buffer) Ready() bool {

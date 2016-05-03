@@ -3,7 +3,7 @@ package interputil_test
 import (
 	"testing"
 
-	"llvm.org/llvm/tools/llgo/interp/interputil"
+	"github.com/axw/interputil"
 )
 
 func TestBackQuotes(t *testing.T) {
