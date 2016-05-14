@@ -6,6 +6,17 @@ import (
 	"github.com/axw/interputil"
 )
 
+func TestExplicitNewline(t *testing.T) {
+	var b interputil.Buffer
+	n, err := b.WriteString("what\n")
+	if err != nil {
+		t.Fatalf("failed to write partial raw string: %v", err)
+	}
+	if n != 5 {
+		t.Fatalf("expected 5, got %d", n)
+	}
+}
+
 func TestBackQuotes(t *testing.T) {
 	var b interputil.Buffer
 	if _, err := b.WriteString("`abc"); err != nil {
@@ -23,4 +34,31 @@ func TestBackQuotes(t *testing.T) {
 	if s := b.String(); s != "`abcdef`" {
 		t.Errorf("expected `abcdef`, got %q", s)
 	}
+}
+
+func TestWriteMultipleLines(t *testing.T) {
+	var b interputil.Buffer
+	n, err := b.WriteString("what\never")
+	if err != interputil.ErrMultipleLines {
+		t.Fatalf("expected %v, got %v", interputil.ErrMultipleLines, err)
+	}
+	if n != len("what\n") {
+		t.Fatalf("expected %v, got %v", len("what\n"), n)
+	}
+	if !b.Ready() {
+		t.Errorf("expected buffer to be ready")
+	}
+	if s := b.String(); s != "what\n" {
+		t.Errorf("expected what\n, got %q", s)
+	}
+}
+
+// TODO
+func TestComments(t *testing.T) {
+	var b interputil.Buffer
+	if _, err := b.WriteString("// abc\nmeep"); err != nil {
+		t.Fatal(err)
+	}
+	t.Log(b.String())
+	t.Logf("%v", b.Tokens())
 }

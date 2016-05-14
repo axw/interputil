@@ -7,7 +7,7 @@ import (
 )
 
 func ParseImports(fset *token.FileSet, buf *Buffer) ([]*ast.ImportSpec, error) {
-	if buf.First() != token.IMPORT {
+	if buf.Tokens()[0] != token.IMPORT {
 		panic("buffer does not contain an import spec")
 	}
 	file, err := parseTopLevel(fset, buf)
@@ -18,7 +18,7 @@ func ParseImports(fset *token.FileSet, buf *Buffer) ([]*ast.ImportSpec, error) {
 }
 
 func ParseFuncDecl(fset *token.FileSet, buf *Buffer) (*ast.FuncDecl, error) {
-	if buf.First() != token.FUNC {
+	if buf.Tokens()[0] != token.FUNC {
 		panic("buffer does not contain a type spec")
 	}
 	file, err := parseTopLevel(fset, buf)
@@ -29,7 +29,7 @@ func ParseFuncDecl(fset *token.FileSet, buf *Buffer) (*ast.FuncDecl, error) {
 }
 
 func ParseTypeSpec(fset *token.FileSet, buf *Buffer) (*ast.TypeSpec, error) {
-	if buf.First() != token.TYPE {
+	if buf.Tokens()[0] != token.TYPE {
 		panic("buffer does not contain a type spec")
 	}
 	file, err := parseTopLevel(fset, buf)
@@ -40,7 +40,7 @@ func ParseTypeSpec(fset *token.FileSet, buf *Buffer) (*ast.TypeSpec, error) {
 }
 
 func ParseValueSpec(fset *token.FileSet, buf *Buffer) (*ast.ValueSpec, error) {
-	if t := buf.First(); t != token.VAR && t != token.CONST {
+	if t := buf.Tokens()[0]; t != token.VAR && t != token.CONST {
 		panic("buffer does not contain a value spec")
 	}
 	file, err := parseTopLevel(fset, buf)
